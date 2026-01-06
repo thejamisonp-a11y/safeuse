@@ -209,11 +209,12 @@ async def check_interaction(request: CheckRequest):
             request.already_taken
         )
         
-        # Step 3: Get harm-reduction advice
+        # Step 3: Get harm-reduction advice (optimized with projection)
         context = "already_taken" if request.already_taken else "planning"
-        advice_docs = await db.harm_advice.find({
-            "context": {"$in": [context, "both"]}
-        }).to_list(100)
+        advice_docs = await db.harm_advice.find(
+            {"context": {"$in": [context, "both"]}},
+            {"advice": 1, "_id": 0}
+        ).to_list(100)
         
         harm_advice = [doc["advice"] for doc in advice_docs]
         
@@ -224,10 +225,13 @@ async def check_interaction(request: CheckRequest):
             else:
                 harm_advice.insert(0, "Consider avoiding this combination to reduce risk.")
         
-        # Step 4: Get emergency symptoms if high risk
+        # Step 4: Get emergency symptoms if high risk (optimized with projection)
         emergency_symptoms = None
         if risk_level in ["high", "avoid"]:
-            symptoms = await db.symptoms.find({"severity": {"$in": ["serious", "emergency"]}}).to_list(50)
+            symptoms = await db.symptoms.find(
+                {"severity": {"$in": ["serious", "emergency"]}},
+                {"name": 1, "description": 1, "action": 1, "_id": 0}
+            ).to_list(50)
             emergency_symptoms = [
                 {
                     "name": s["name"],
