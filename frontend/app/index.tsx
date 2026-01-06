@@ -1,10 +1,27 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Image } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import LoadingScreen from '../components/LoadingScreen';
+
+const LOGO_URL = 'https://customer-assets.emergentagent.com/job_harmreduce-app/artifacts/d5b11qlb_602a290a-24ce-4243-a5d2-b6e192ad40f9.png';
 
 export default function HomeScreen() {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time (you can replace this with actual data loading)
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -12,7 +29,11 @@ export default function HomeScreen() {
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.logoContainer}>
-            <Ionicons name="shield-checkmark" size={48} color="#10B981" />
+            <Image
+              source={{ uri: LOGO_URL }}
+              style={styles.logoImage}
+              resizeMode="contain"
+            />
           </View>
           <Text style={styles.title}>SAFEUSE</Text>
           <Text style={styles.subtitle}>Harm Reduction Drug Interaction Checker</Text>
@@ -74,13 +95,22 @@ const styles = StyleSheet.create({
     marginBottom: 32,
   },
   logoContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: '#ECFDF5',
+    width: 100,
+    height: 100,
+    borderRadius: 20,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  logoImage: {
+    width: 80,
+    height: 80,
   },
   title: {
     fontSize: 32,
