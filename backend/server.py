@@ -313,76 +313,76 @@ async def seed_database():
         # Comprehensive interaction data
         interactions = [
             # ===== AVOID (LIFE-THREATENING) =====
-            {
-                "substance_a": "alcohol",
-                "substance_b": "benzos",
-                "risk_level": "avoid",
-                "mechanism": "Both are CNS depressants that can cause severe respiratory depression",
-                "notes": "This combination significantly increases risk of overdose, loss of consciousness, and death."
-            },
-            {
-                "substance_a": "alcohol",
-                "substance_b": "opioids",
-                "risk_level": "avoid",
-                "mechanism": "Synergistic respiratory depression",
-                "notes": "Extremely dangerous combination that can lead to fatal overdose."
-            },
-            {
-                "substance_a": "mdma",
-                "substance_b": "alcohol",
-                "risk_level": "high",
-                "mechanism": "Increased dehydration and masking of alcohol intoxication",
-                "notes": "MDMA can mask effects of alcohol leading to dangerous overconsumption. Both increase dehydration risk."
-            },
-            {
-                "substance_a": "mdma",
-                "substance_b": "cocaine",
-                "risk_level": "high",
-                "mechanism": "Increased cardiovascular strain and neurotoxicity",
-                "notes": "Both stimulants significantly increase heart rate and blood pressure."
-            },
-            {
-                "substance_a": "cocaine",
-                "substance_b": "alcohol",
-                "risk_level": "high",
-                "mechanism": "Forms cocaethylene, increasing cardiac toxicity",
-                "notes": "Cocaethylene is more toxic than cocaine alone and increases overdose risk."
-            },
-            {
-                "substance_a": "lsd",
-                "substance_b": "cannabis",
-                "risk_level": "moderate",
-                "mechanism": "Cannabis can intensify psychedelic effects",
-                "notes": "May increase anxiety and confusion, especially in inexperienced users."
-            },
-            {
-                "substance_a": "ketamine",
-                "substance_b": "alcohol",
-                "risk_level": "high",
-                "mechanism": "Increased risk of vomiting while unconscious and respiratory depression",
-                "notes": "Dangerous combination with high risk of aspiration."
-            },
-            {
-                "substance_a": "cannabis",
-                "substance_b": "alcohol",
-                "risk_level": "moderate",
-                "mechanism": "Enhanced intoxication and increased nausea/dizziness",
-                "notes": "Can lead to 'greening out' - severe nausea and dizziness."
-            },
-            {
-                "substance_a": "mdma",
-                "substance_b": "amphetamine",
-                "risk_level": "high",
-                "mechanism": "Increased neurotoxicity and cardiovascular strain",
-                "notes": "Both affect serotonin and dopamine systems, increasing risk of overheating and serotonin syndrome."
-            },
-            {
-                "substance_a": "lsd",
-                "substance_b": "mushrooms",
-                "risk_level": "moderate",
-                "mechanism": "Cross-tolerance and intensified psychedelic effects",
-                "notes": "Effects may be unpredictable. Not physically dangerous but psychologically challenging."
-            }
+            {"substance_a": "alcohol", "substance_b": "benzos", "risk_level": "avoid", "mechanism": "Both are CNS depressants causing severe respiratory depression", "notes": "Significantly increases risk of overdose, loss of consciousness, and death."},
+            {"substance_a": "alcohol", "substance_b": "opioids", "risk_level": "avoid", "mechanism": "Synergistic respiratory depression", "notes": "Extremely dangerous - can lead to fatal overdose."},
+            {"substance_a": "alcohol", "substance_b": "ghb", "risk_level": "avoid", "mechanism": "Severe CNS depression and respiratory failure", "notes": "Very high risk of unconsciousness, respiratory arrest, and death."},
+            {"substance_a": "benzos", "substance_b": "opioids", "risk_level": "avoid", "mechanism": "Compounding respiratory depression", "notes": "Leading cause of overdose deaths. Extremely dangerous."},
+            {"substance_a": "benzos", "substance_b": "ghb", "risk_level": "avoid", "mechanism": "Severe sedation and respiratory depression", "notes": "High risk of coma and death."},
+            {"substance_a": "opioids", "substance_b": "ghb", "risk_level": "avoid", "mechanism": "Extreme respiratory depression", "notes": "Life-threatening combination."},
+            {"substance_a": "maoi", "substance_b": "mdma", "risk_level": "avoid", "mechanism": "Risk of serotonin syndrome", "notes": "Can cause dangerously high body temperature, seizures, and death."},
+            {"substance_a": "maoi", "substance_b": "ssri", "risk_level": "avoid", "mechanism": "Severe serotonin syndrome", "notes": "Medical emergency - can be fatal."},
+            {"substance_a": "maoi", "substance_b": "amphetamine", "risk_level": "avoid", "mechanism": "Hypertensive crisis", "notes": "Dangerously elevated blood pressure."},
+            {"substance_a": "maoi", "substance_b": "cocaine", "risk_level": "avoid", "mechanism": "Severe hypertensive crisis", "notes": "Risk of stroke and cardiovascular emergency."},
+            {"substance_a": "maoi", "substance_b": "dxm", "risk_level": "avoid", "mechanism": "Serotonin syndrome", "notes": "Potentially fatal interaction."},
+            {"substance_a": "tramadol", "substance_b": "ssri", "risk_level": "avoid", "mechanism": "Serotonin syndrome risk", "notes": "Can cause seizures and serotonin toxicity."},
+            {"substance_a": "tramadol", "substance_b": "maoi", "risk_level": "avoid", "mechanism": "Severe serotonin syndrome", "notes": "Life-threatening interaction."},
+            
+            # ===== HIGH RISK =====
+            {"substance_a": "mdma", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Increased dehydration and masked intoxication", "notes": "MDMA masks alcohol effects leading to dangerous overconsumption."},
+            {"substance_a": "mdma", "substance_b": "cocaine", "risk_level": "high", "mechanism": "Cardiovascular strain and neurotoxicity", "notes": "Both significantly increase heart rate and blood pressure."},
+            {"substance_a": "mdma", "substance_b": "amphetamine", "risk_level": "high", "mechanism": "Increased neurotoxicity and overheating risk", "notes": "Risk of serotonin syndrome and hyperthermia."},
+            {"substance_a": "mdma", "substance_b": "methamphetamine", "risk_level": "high", "mechanism": "Extreme cardiovascular stress and neurotoxicity", "notes": "Dangerous strain on heart and brain."},
+            {"substance_a": "cocaine", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Forms cocaethylene - increased cardiac toxicity", "notes": "Cocaethylene is more toxic than cocaine alone."},
+            {"substance_a": "cocaine", "substance_b": "amphetamine", "risk_level": "high", "mechanism": "Excessive cardiovascular strain", "notes": "Risk of heart attack and stroke."},
+            {"substance_a": "cocaine", "substance_b": "mdma", "risk_level": "high", "mechanism": "Compounding stimulant effects", "notes": "Extreme heart and blood pressure elevation."},
+            {"substance_a": "ketamine", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Risk of vomiting while unconscious", "notes": "High risk of aspiration and respiratory depression."},
+            {"substance_a": "ketamine", "substance_b": "benzos", "risk_level": "high", "mechanism": "Excessive sedation and respiratory depression", "notes": "Dangerous combination increasing blackout risk."},
+            {"substance_a": "ketamine", "substance_b": "opioids", "risk_level": "high", "mechanism": "Respiratory depression", "notes": "Risk of unconsciousness and breathing problems."},
+            {"substance_a": "dxm", "substance_b": "alcohol", "risk_level": "high", "mechanism": "CNS depression and nausea", "notes": "Increased risk of vomiting and respiratory issues."},
+            {"substance_a": "pcp", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Unpredictable effects and respiratory depression", "notes": "Dangerous combination with erratic behavior risk."},
+            {"substance_a": "synthetic_cannabinoids", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Unpredictable interactions", "notes": "Synthetic cannabinoids have unpredictable effects."},
+            {"substance_a": "mdma", "substance_b": "ssri", "risk_level": "high", "mechanism": "SSRIs reduce MDMA effects but increase neurotoxicity risk", "notes": "May feel underwhelming but brain impact remains."},
+            {"substance_a": "tramadol", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Respiratory depression and seizure risk", "notes": "Dangerous combination."},
+            {"substance_a": "tramadol", "substance_b": "benzos", "risk_level": "high", "mechanism": "Respiratory depression", "notes": "Significant overdose risk."},
+            {"substance_a": "amphetamine", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Masked intoxication", "notes": "Stimulants mask alcohol effects leading to overconsumption."},
+            {"substance_a": "methamphetamine", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Masked intoxication and liver stress", "notes": "Dangerous overconsumption risk."},
+            
+            # ===== MODERATE RISK =====
+            {"substance_a": "cannabis", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced intoxication and nausea", "notes": "Can cause 'greening out' - severe nausea and dizziness."},
+            {"substance_a": "lsd", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "May increase anxiety and confusion."},
+            {"substance_a": "mushrooms", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "Can increase thought loops and anxiety."},
+            {"substance_a": "lsd", "substance_b": "mushrooms", "risk_level": "moderate", "mechanism": "Cross-tolerance and intensified effects", "notes": "Psychologically intense but not physically dangerous."},
+            {"substance_a": "lsd", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Dulled psychedelic experience", "notes": "Alcohol can reduce trip intensity and increase nausea."},
+            {"substance_a": "mushrooms", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Reduced trip quality and increased nausea", "notes": "Generally not recommended but not highly dangerous."},
+            {"substance_a": "mdma", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Cannabis can increase anxiety during comedown", "notes": "Some find it helpful, others find it anxiety-inducing."},
+            {"substance_a": "ketamine", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified dissociation", "notes": "Can be disorienting and increase nausea."},
+            {"substance_a": "nitrous", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Enhanced dissociation", "notes": "Can be disorienting - use while seated."},
+            {"substance_a": "lsd", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Intensely enhanced psychedelic effects", "notes": "Very intense but brief. Risk of falling."},
+            {"substance_a": "mushrooms", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Intensely enhanced psychedelic effects", "notes": "Powerful but brief synergy."},
+            {"substance_a": "mdma", "substance_b": "2cb", "risk_level": "moderate", "mechanism": "Combined stimulant and psychedelic effects", "notes": "Intense experience with cardiovascular considerations."},
+            {"substance_a": "lsd", "substance_b": "2cb", "risk_level": "moderate", "mechanism": "Cross-tolerance and intensified visuals", "notes": "Psychologically intense."},
+            {"substance_a": "ketamine", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Profound dissociation", "notes": "Risk of complete dissociation - sit or lie down."},
+            {"substance_a": "dxm", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified dissociation and confusion", "notes": "Can increase anxiety and nausea."},
+            {"substance_a": "caffeine", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Masked intoxication", "notes": "Caffeine can mask alcohol effects leading to overconsumption."},
+            {"substance_a": "caffeine", "substance_b": "mdma", "risk_level": "moderate", "mechanism": "Increased cardiovascular strain", "notes": "Adds to heart rate and anxiety."},
+            {"substance_a": "pregabalin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased risk of respiratory depression."},
+            {"substance_a": "gabapentin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased intoxication and blackout risk."},
+            {"substance_a": "dph", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation and confusion", "notes": "Uncomfortable combination."},
+            
+            # ===== LOW RISK =====
+            {"substance_a": "lsd", "substance_b": "ketamine", "risk_level": "low", "mechanism": "Minimal dangerous interaction", "notes": "Psychologically intense but not physically dangerous. Can be very disorienting."},
+            {"substance_a": "mushrooms", "substance_b": "ketamine", "risk_level": "low", "mechanism": "Minimal dangerous interaction", "notes": "Intense dissociative psychedelic experience."},
+            {"substance_a": "lsd", "substance_b": "mdma", "risk_level": "low", "mechanism": "Enhanced empathogenic and psychedelic effects", "notes": "Popular combination ('candyflip') but intense. Stay hydrated."},
+            {"substance_a": "mushrooms", "substance_b": "mdma", "risk_level": "low", "mechanism": "Enhanced effects", "notes": "Intense experience - 'hippy flip'. Stay hydrated."},
+            {"substance_a": "cannabis", "substance_b": "mushrooms", "risk_level": "low", "mechanism": "Intensified effects", "notes": "Can increase anxiety in some - start with small amounts of cannabis."},
+            {"substance_a": "cannabis", "substance_b": "lsd", "risk_level": "low", "mechanism": "Intensified psychedelic effects", "notes": "Can trigger anxiety or paranoia in some users."},
+            {"substance_a": "lsd", "substance_b": "dmt", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "DMT experience may be less intense if LSD is already active."},
+            {"substance_a": "mushrooms", "substance_b": "dmt", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "Both tryptamines - some cross-tolerance."},
+            {"substance_a": "cannabis", "substance_b": "caffeine", "risk_level": "low", "mechanism": "Minimal interaction", "notes": "Generally safe but may increase anxiety in some."},
+            {"substance_a": "lsd", "substance_b": "mescaline", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "Both psychedelics - tolerance overlap."},
+            {"substance_a": "kratom", "substance_b": "cannabis", "risk_level": "low", "mechanism": "Minimal interaction", "notes": "Generally well tolerated combination."},
+            {"substance_a": "nitrous", "substance_b": "mdma", "risk_level": "low", "mechanism": "Brief enhanced effects", "notes": "Popular combination but very brief."},
+            {"substance_a": "poppers", "substance_b": "cannabis", "risk_level": "low", "mechanism": "Minimal interaction", "notes": "Can cause dizziness - sit down."},
         ]
         await db.interactions.insert_many(interactions)
         
