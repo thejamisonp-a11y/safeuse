@@ -62,7 +62,6 @@ export default function LoadingScreen() {
       </Animated.View>
 
       <Animated.View style={[styles.textContainer, { opacity: fadeAnim }]}>
-        <Text style={styles.title}>SAFEUSE</Text>
         <Text style={styles.subtitle}>If you're going to use, use safely</Text>
       </Animated.View>
 
