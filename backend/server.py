@@ -185,7 +185,10 @@ async def root():
 @api_router.get("/substances", response_model=List[Substance])
 async def get_substances():
     """Get all available substances"""
-    substances = await db.substances.find().to_list(1000)
+    substances = await db.substances.find(
+        {},
+        {"id": 1, "name": 1, "drug_class": 1, "common_names": 1, "_id": 0}
+    ).to_list(1000)
     return [Substance(**s) for s in substances]
 
 @api_router.post("/check", response_model=CheckResponse)
