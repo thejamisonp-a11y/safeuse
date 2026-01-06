@@ -356,6 +356,36 @@ async def seed_database():
             {"substance_a": "cocaine", "substance_b": "opioids", "risk_level": "avoid", "mechanism": "Stimulants can mask respiratory depression from opioids", "notes": "When cocaine wears off, dangerous opioid concentration remains."},
             
             # ===== MODERATE RISK =====
+            # Cannabis combinations
+            {"substance_a": "cannabis", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced intoxication and nausea", "notes": "Can cause 'greening out' - severe nausea and dizziness."},
+            {"substance_a": "lsd", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "May increase anxiety and confusion - start with low doses."},
+            {"substance_a": "mushrooms", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "Can increase thought loops and anxiety."},
+            {"substance_a": "cannabis", "substance_b": "ketamine", "risk_level": "moderate", "mechanism": "Intensified dissociation", "notes": "Can be disorienting and increase nausea."},
+            
+            # Psychedelic combinations  
+            {"substance_a": "lsd", "substance_b": "mushrooms", "risk_level": "moderate", "mechanism": "Cross-tolerance and intensified effects", "notes": "Psychologically intense but not physically dangerous."},
+            {"substance_a": "lsd", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Dulled psychedelic experience and nausea", "notes": "Alcohol reduces trip quality."},
+            {"substance_a": "mushrooms", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Reduced trip quality and increased nausea", "notes": "Generally not recommended but not highly dangerous."},
+            {"substance_a": "lsd", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Intensely enhanced psychedelic effects", "notes": "Very intense but brief. Risk of falling - sit down."},
+            {"substance_a": "mushrooms", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Intensely enhanced psychedelic effects", "notes": "Powerful but brief synergy."},
+            {"substance_a": "mdma", "substance_b": "2cb", "risk_level": "moderate", "mechanism": "Combined stimulant and psychedelic effects", "notes": "Intense experience with cardiovascular considerations."},
+            
+            # Dissociative combinations
+            {"substance_a": "ketamine", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Profound dissociation", "notes": "Risk of complete dissociation - sit or lie down."},
+            {"substance_a": "dxm", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified dissociation and confusion", "notes": "Can increase anxiety and nausea."},
+            {"substance_a": "nitrous", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Increased sedation and ataxia", "notes": "Can lead to vomiting and blackouts."},
+            
+            # Stimulant combinations
+            {"substance_a": "caffeine", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Masked intoxication", "notes": "Caffeine can mask alcohol effects leading to overconsumption."},
+            {"substance_a": "caffeine", "substance_b": "mdma", "risk_level": "moderate", "mechanism": "Increased cardiovascular strain", "notes": "Adds to heart rate and anxiety."},
+            {"substance_a": "mdma", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Cannabis can increase anxiety during comedown", "notes": "Some find helpful, others find anxiety-inducing."},
+            {"substance_a": "amphetamine", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Cannabis can increase stimulant-induced anxiety", "notes": "Effects vary by individual."},
+            
+            # Gabapentinoid combinations
+            {"substance_a": "pregabalin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased risk of respiratory depression."},
+            {"substance_a": "gabapentin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased intoxication and blackout risk."},
+            
+            # ===== LOW RISK =====
             {"substance_a": "cannabis", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced intoxication and nausea", "notes": "Can cause 'greening out' - severe nausea and dizziness."},
             {"substance_a": "lsd", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "May increase anxiety and confusion."},
             {"substance_a": "mushrooms", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "Can increase thought loops and anxiety."},
