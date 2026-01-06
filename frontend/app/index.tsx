@@ -35,7 +35,6 @@ export default function HomeScreen() {
               resizeMode="contain"
             />
           </View>
-          <Text style={styles.title}>SAFEUSE</Text>
           <Text style={styles.subtitle}>Harm Reduction Drug Interaction Checker</Text>
         </View>
 
