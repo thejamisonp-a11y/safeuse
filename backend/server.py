@@ -130,8 +130,11 @@ async def calculate_interaction_risk(substance_ids: List[str]) -> dict:
             "notes": "Please select at least 2 substances to check interactions."
         }
     
-    # Get all substances
-    substances = await db.substances.find({"id": {"$in": substance_ids}}).to_list(100)
+    # Get all substances (optimized with projection)
+    substances = await db.substances.find(
+        {"id": {"$in": substance_ids}},
+        {"name": 1, "_id": 0}
+    ).to_list(100)
     substance_names = [s["name"] for s in substances]
     
     # Check pairwise interactions
