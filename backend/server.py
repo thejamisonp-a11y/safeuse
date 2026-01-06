@@ -251,7 +251,7 @@ async def get_symptoms():
 
 @api_router.post("/seed-data")
 async def seed_database():
-    """Seed database with initial data"""
+    """Seed database with comprehensive substance library"""
     try:
         # Clear existing data
         await db.substances.delete_many({})
@@ -259,18 +259,54 @@ async def seed_database():
         await db.harm_advice.delete_many({})
         await db.symptoms.delete_many({})
         
-        # Seed substances
+        # Comprehensive substance library
         substances = [
-            {"id": "mdma", "name": "MDMA", "drug_class": "stimulant-empathogen", "common_names": ["Ecstasy", "Molly", "E"]},
-            {"id": "alcohol", "name": "Alcohol", "drug_class": "depressant", "common_names": ["Booze", "Liquor"]},
-            {"id": "cocaine", "name": "Cocaine", "drug_class": "stimulant", "common_names": ["Coke", "Blow"]},
-            {"id": "cannabis", "name": "Cannabis", "drug_class": "cannabinoid", "common_names": ["Weed", "Marijuana", "THC"]},
-            {"id": "lsd", "name": "LSD", "drug_class": "psychedelic", "common_names": ["Acid"]},
-            {"id": "ketamine", "name": "Ketamine", "drug_class": "dissociative", "common_names": ["K", "Special K"]},
-            {"id": "benzos", "name": "Benzodiazepines", "drug_class": "depressant", "common_names": ["Xanax", "Valium", "Benzos"]},
-            {"id": "opioids", "name": "Opioids", "drug_class": "depressant", "common_names": ["Heroin", "Fentanyl", "Oxy"]},
-            {"id": "amphetamine", "name": "Amphetamine", "drug_class": "stimulant", "common_names": ["Speed", "Adderall"]},
-            {"id": "mushrooms", "name": "Psilocybin", "drug_class": "psychedelic", "common_names": ["Shrooms", "Magic Mushrooms"]}
+            # Stimulants
+            {"id": "mdma", "name": "MDMA", "drug_class": "stimulant-empathogen", "common_names": ["Ecstasy", "Molly", "E", "X"]},
+            {"id": "cocaine", "name": "Cocaine", "drug_class": "stimulant", "common_names": ["Coke", "Blow", "Snow"]},
+            {"id": "amphetamine", "name": "Amphetamine", "drug_class": "stimulant", "common_names": ["Speed", "Adderall", "Dexedrine"]},
+            {"id": "methamphetamine", "name": "Methamphetamine", "drug_class": "stimulant", "common_names": ["Meth", "Crystal", "Ice", "Tina"]},
+            {"id": "caffeine", "name": "Caffeine", "drug_class": "stimulant", "common_names": ["Coffee", "Energy drinks"]},
+            {"id": "methylphenidate", "name": "Methylphenidate", "drug_class": "stimulant", "common_names": ["Ritalin", "Concerta"]},
+            
+            # Depressants
+            {"id": "alcohol", "name": "Alcohol", "drug_class": "depressant", "common_names": ["Booze", "Liquor", "Beer", "Wine"]},
+            {"id": "benzos", "name": "Benzodiazepines", "drug_class": "depressant", "common_names": ["Xanax", "Valium", "Klonopin", "Ativan"]},
+            {"id": "opioids", "name": "Opioids", "drug_class": "depressant", "common_names": ["Heroin", "Fentanyl", "Oxy", "Morphine"]},
+            {"id": "ghb", "name": "GHB/GBL", "drug_class": "depressant", "common_names": ["G", "Liquid Ecstasy", "Gina"]},
+            {"id": "barbiturates", "name": "Barbiturates", "drug_class": "depressant", "common_names": ["Phenobarbital", "Seconal"]},
+            {"id": "zolpidem", "name": "Zolpidem", "drug_class": "depressant", "common_names": ["Ambien", "Stilnox"]},
+            
+            # Psychedelics
+            {"id": "lsd", "name": "LSD", "drug_class": "psychedelic", "common_names": ["Acid", "Lucy", "Tabs"]},
+            {"id": "mushrooms", "name": "Psilocybin", "drug_class": "psychedelic", "common_names": ["Shrooms", "Magic Mushrooms"]},
+            {"id": "dmt", "name": "DMT", "drug_class": "psychedelic", "common_names": ["Dimitri", "Spirit Molecule"]},
+            {"id": "mescaline", "name": "Mescaline", "drug_class": "psychedelic", "common_names": ["Peyote", "San Pedro"]},
+            {"id": "2cb", "name": "2C-B", "drug_class": "psychedelic", "common_names": ["Nexus", "Bees"]},
+            {"id": "ayahuasca", "name": "Ayahuasca", "drug_class": "psychedelic", "common_names": ["Aya", "Yagé"]},
+            
+            # Dissociatives
+            {"id": "ketamine", "name": "Ketamine", "drug_class": "dissociative", "common_names": ["K", "Special K", "Ket"]},
+            {"id": "dxm", "name": "DXM", "drug_class": "dissociative", "common_names": ["Dextromethorphan", "Robitussin", "Dex"]},
+            {"id": "pcp", "name": "PCP", "drug_class": "dissociative", "common_names": ["Angel Dust", "Sherm"]},
+            {"id": "nitrous", "name": "Nitrous Oxide", "drug_class": "dissociative", "common_names": ["Laughing Gas", "Nos", "Whippits"]},
+            
+            # Cannabinoids
+            {"id": "cannabis", "name": "Cannabis", "drug_class": "cannabinoid", "common_names": ["Weed", "Marijuana", "THC", "Pot"]},
+            {"id": "synthetic_cannabinoids", "name": "Synthetic Cannabinoids", "drug_class": "cannabinoid", "common_names": ["Spice", "K2"]},
+            
+            # Antidepressants
+            {"id": "ssri", "name": "SSRIs", "drug_class": "antidepressant", "common_names": ["Prozac", "Zoloft", "Lexapro"]},
+            {"id": "maoi", "name": "MAOIs", "drug_class": "antidepressant", "common_names": ["Nardil", "Parnate"]},
+            {"id": "tricyclic", "name": "Tricyclic Antidepressants", "drug_class": "antidepressant", "common_names": ["Amitriptyline", "Imipramine"]},
+            
+            # Other
+            {"id": "tramadol", "name": "Tramadol", "drug_class": "opioid-like", "common_names": ["Ultram", "Tramal"]},
+            {"id": "pregabalin", "name": "Pregabalin", "drug_class": "gabapentinoid", "common_names": ["Lyrica"]},
+            {"id": "gabapentin", "name": "Gabapentin", "drug_class": "gabapentinoid", "common_names": ["Neurontin"]},
+            {"id": "dph", "name": "Diphenhydramine", "drug_class": "deliriant", "common_names": ["Benadryl", "DPH"]},
+            {"id": "poppers", "name": "Alkyl Nitrites", "drug_class": "vasodilator", "common_names": ["Poppers", "Rush"]},
+            {"id": "kratom", "name": "Kratom", "drug_class": "opioid-like", "common_names": ["Mitragyna speciosa"]},
         ]
         await db.substances.insert_many(substances)
         
