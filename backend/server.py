@@ -310,8 +310,9 @@ async def seed_database():
         ]
         await db.substances.insert_many(substances)
         
-        # Seed interactions
+        # Comprehensive interaction data
         interactions = [
+            # ===== AVOID (LIFE-THREATENING) =====
             {
                 "substance_a": "alcohol",
                 "substance_b": "benzos",
