@@ -347,6 +347,14 @@ async def seed_database():
             {"substance_a": "amphetamine", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Masked intoxication", "notes": "Stimulants mask alcohol effects leading to overconsumption."},
             {"substance_a": "methamphetamine", "substance_b": "alcohol", "risk_level": "high", "mechanism": "Masked intoxication and liver stress", "notes": "Dangerous overconsumption risk."},
             
+            # Based on TripSit - additional dangerous/high risk
+            {"substance_a": "tramadol", "substance_b": "amphetamine", "risk_level": "avoid", "mechanism": "Both increase seizure risk significantly", "notes": "Tramadol and stimulants both lower seizure threshold."},
+            {"substance_a": "tramadol", "substance_b": "cocaine", "risk_level": "avoid", "mechanism": "Both increase seizure risk significantly", "notes": "Tramadol and stimulants both lower seizure threshold."},
+            {"substance_a": "tramadol", "substance_b": "mdma", "risk_level": "avoid", "mechanism": "Both increase seizure risk significantly", "notes": "Tramadol and stimulants both lower seizure threshold."},
+            {"substance_a": "dxm", "substance_b": "ssri", "risk_level": "avoid", "mechanism": "High risk of serotonin syndrome", "notes": "Can be fatal. SSRIs strongly potentiate DXM."},
+            {"substance_a": "dxm", "substance_b": "maoi", "risk_level": "avoid", "mechanism": "Severe serotonin syndrome", "notes": "Potentially fatal - avoid completely."},
+            {"substance_a": "cocaine", "substance_b": "opioids", "risk_level": "avoid", "mechanism": "Stimulants can mask respiratory depression from opioids", "notes": "When cocaine wears off, dangerous opioid concentration remains."},
+            
             # ===== MODERATE RISK =====
             {"substance_a": "cannabis", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced intoxication and nausea", "notes": "Can cause 'greening out' - severe nausea and dizziness."},
             {"substance_a": "lsd", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "May increase anxiety and confusion."},
