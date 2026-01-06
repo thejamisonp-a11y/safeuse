@@ -408,19 +408,36 @@ async def seed_database():
             {"substance_a": "dph", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation and confusion", "notes": "Uncomfortable combination."},
             
             # ===== LOW RISK =====
+            # Psychedelic + dissociative (generally safe, intense experiences)
             {"substance_a": "lsd", "substance_b": "ketamine", "risk_level": "low", "mechanism": "Minimal dangerous interaction", "notes": "Psychologically intense but not physically dangerous. Can be very disorienting."},
             {"substance_a": "mushrooms", "substance_b": "ketamine", "risk_level": "low", "mechanism": "Minimal dangerous interaction", "notes": "Intense dissociative psychedelic experience."},
-            {"substance_a": "lsd", "substance_b": "mdma", "risk_level": "low", "mechanism": "Enhanced empathogenic and psychedelic effects", "notes": "Popular combination ('candyflip') but intense. Stay hydrated."},
-            {"substance_a": "mushrooms", "substance_b": "mdma", "risk_level": "low", "mechanism": "Enhanced effects", "notes": "Intense experience - 'hippy flip'. Stay hydrated."},
-            {"substance_a": "cannabis", "substance_b": "mushrooms", "risk_level": "low", "mechanism": "Intensified effects", "notes": "Can increase anxiety in some - start with small amounts of cannabis."},
-            {"substance_a": "cannabis", "substance_b": "lsd", "risk_level": "low", "mechanism": "Intensified psychedelic effects", "notes": "Can trigger anxiety or paranoia in some users."},
-            {"substance_a": "lsd", "substance_b": "dmt", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "DMT experience may be less intense if LSD is already active."},
+            {"substance_a": "lsd", "substance_b": "dmt", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "DMT experience may be less intense if LSD already active."},
             {"substance_a": "mushrooms", "substance_b": "dmt", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "Both tryptamines - some cross-tolerance."},
+            
+            # Popular combinations (candy/hippy flips)
+            {"substance_a": "lsd", "substance_b": "mdma", "risk_level": "low", "mechanism": "Enhanced empathogenic and psychedelic effects", "notes": "Popular 'candyflip' combination. Stay hydrated."},
+            {"substance_a": "mushrooms", "substance_b": "mdma", "risk_level": "low", "mechanism": "Enhanced effects", "notes": "Intense 'hippy flip' experience. Stay hydrated."},
+            
+            # Psychedelic + nitrous
+            {"substance_a": "mdma", "substance_b": "nitrous", "risk_level": "low", "mechanism": "Brief enhanced effects", "notes": "Popular combination but very brief."},
+            {"substance_a": "dmt", "substance_b": "nitrous", "risk_level": "low", "mechanism": "Intensely synergistic", "notes": "Extremely intense but brief."},
+            
+            # Cannabis combinations (generally low risk)
             {"substance_a": "cannabis", "substance_b": "caffeine", "risk_level": "low", "mechanism": "Minimal interaction", "notes": "Generally safe but may increase anxiety in some."},
-            {"substance_a": "lsd", "substance_b": "mescaline", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "Both psychedelics - tolerance overlap."},
             {"substance_a": "kratom", "substance_b": "cannabis", "risk_level": "low", "mechanism": "Minimal interaction", "notes": "Generally well tolerated combination."},
-            {"substance_a": "nitrous", "substance_b": "mdma", "risk_level": "low", "mechanism": "Brief enhanced effects", "notes": "Popular combination but very brief."},
-            {"substance_a": "poppers", "substance_b": "cannabis", "risk_level": "low", "mechanism": "Minimal interaction", "notes": "Can cause dizziness - sit down."},
+            
+            # Benzodiazepines reducing psychedelic effects
+            {"substance_a": "lsd", "substance_b": "benzos", "risk_level": "low", "mechanism": "Benzos reduce psychedelic effects", "notes": "Benzos commonly used to end difficult trips."},
+            {"substance_a": "mushrooms", "substance_b": "benzos", "risk_level": "low", "mechanism": "Benzos reduce psychedelic effects", "notes": "Can help manage anxiety during trips."},
+            
+            # Cross-tolerances (psychedelics)
+            {"substance_a": "lsd", "substance_b": "mescaline", "risk_level": "low", "mechanism": "Cross-tolerance", "notes": "Both psychedelics - significant tolerance overlap."},
+            {"substance_a": "lsd", "substance_b": "2cb", "risk_level": "low", "mechanism": "Intensified visuals", "notes": "Psychologically intense but physically safe."},
+            
+            # SSRI interactions (reduces effects)
+            {"substance_a": "lsd", "substance_b": "ssri", "risk_level": "low", "mechanism": "SSRIs reduce psychedelic effects", "notes": "SSRIs significantly dampen LSD effects."},
+            {"substance_a": "mushrooms", "substance_b": "ssri", "risk_level": "low", "mechanism": "SSRIs reduce psychedelic effects", "notes": "SSRIs block psilocybin effects."},
+            {"substance_a": "dmt", "substance_b": "ssri", "risk_level": "low", "mechanism": "SSRIs may reduce effects", "notes": "SSRIs can dampen DMT experience."},
         ]
         await db.interactions.insert_many(interactions)
         
