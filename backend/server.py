@@ -124,10 +124,18 @@ def get_risk_color(risk_level: str) -> str:
 async def calculate_interaction_risk(substance_ids: List[str]) -> dict:
     """Deterministic risk calculation from database"""
     if len(substance_ids) < 2:
+        # Get substance names even for single substance
+        substances = await db.substances.find(
+            {"id": {"$in": substance_ids}},
+            {"name": 1, "_id": 0}
+        ).to_list(100)
+        substance_names = [s["name"] for s in substances]
+        
         return {
             "risk_level": "unknown",
             "mechanism": "Insufficient substances selected",
-            "notes": "Please select at least 2 substances to check interactions."
+            "notes": "Please select at least 2 substances to check interactions.",
+            "substances": substance_names
         }
     
     # Get all substances (optimized with projection)
