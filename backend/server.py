@@ -199,6 +199,60 @@ async def get_substances():
     ).to_list(1000)
     return [Substance(**s) for s in substances]
 
+@api_router.get("/substance-categories")
+async def get_substance_categories():
+    """Get substances grouped by drug class"""
+    substances = await db.substances.find(
+        {},
+        {"id": 1, "name": 1, "drug_class": 1, "common_names": 1, "_id": 0}
+    ).to_list(1000)
+    
+    categories = {}
+    category_order = [
+        "stimulant", "stimulant-empathogen", "depressant", "psychedelic",
+        "dissociative", "cannabinoid", "antidepressant", "opioid-like",
+        "gabapentinoid", "deliriant", "vasodilator"
+    ]
+    
+    category_labels = {
+        "stimulant": "Stimulants",
+        "stimulant-empathogen": "Empathogens",
+        "depressant": "Depressants",
+        "psychedelic": "Psychedelics",
+        "dissociative": "Dissociatives",
+        "cannabinoid": "Cannabinoids",
+        "antidepressant": "Antidepressants",
+        "opioid-like": "Opioid-like",
+        "gabapentinoid": "Gabapentinoids",
+        "deliriant": "Other",
+        "vasodilator": "Other"
+    }
+    
+    for s in substances:
+        label = category_labels.get(s["drug_class"], "Other")
+        if label not in categories:
+            categories[label] = []
+        categories[label].append({
+            "id": s["id"],
+            "name": s["name"],
+            "drug_class": s["drug_class"],
+            "common_names": s.get("common_names", [])
+        })
+    
+    # Return ordered
+    result = []
+    seen_labels = set()
+    for cls in category_order:
+        label = category_labels.get(cls, "Other")
+        if label not in seen_labels and label in categories:
+            seen_labels.add(label)
+            result.append({
+                "category": label,
+                "substances": categories[label]
+            })
+    
+    return result
+
 @api_router.post("/check", response_model=CheckResponse)
 async def check_interaction(request: CheckRequest):
     """Check drug interaction - DETERMINISTIC risk calculation + AI explanation"""
@@ -403,26 +457,8 @@ async def seed_database():
             {"substance_a": "pregabalin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased risk of respiratory depression."},
             {"substance_a": "gabapentin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased intoxication and blackout risk."},
             
-            # ===== LOW RISK =====
-            {"substance_a": "cannabis", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced intoxication and nausea", "notes": "Can cause 'greening out' - severe nausea and dizziness."},
-            {"substance_a": "lsd", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "May increase anxiety and confusion."},
-            {"substance_a": "mushrooms", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified psychedelic effects", "notes": "Can increase thought loops and anxiety."},
-            {"substance_a": "lsd", "substance_b": "mushrooms", "risk_level": "moderate", "mechanism": "Cross-tolerance and intensified effects", "notes": "Psychologically intense but not physically dangerous."},
-            {"substance_a": "lsd", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Dulled psychedelic experience", "notes": "Alcohol can reduce trip intensity and increase nausea."},
-            {"substance_a": "mushrooms", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Reduced trip quality and increased nausea", "notes": "Generally not recommended but not highly dangerous."},
-            {"substance_a": "mdma", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Cannabis can increase anxiety during comedown", "notes": "Some find it helpful, others find it anxiety-inducing."},
-            {"substance_a": "ketamine", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified dissociation", "notes": "Can be disorienting and increase nausea."},
+            # Additional moderate risk
             {"substance_a": "nitrous", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Enhanced dissociation", "notes": "Can be disorienting - use while seated."},
-            {"substance_a": "lsd", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Intensely enhanced psychedelic effects", "notes": "Very intense but brief. Risk of falling."},
-            {"substance_a": "mushrooms", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Intensely enhanced psychedelic effects", "notes": "Powerful but brief synergy."},
-            {"substance_a": "mdma", "substance_b": "2cb", "risk_level": "moderate", "mechanism": "Combined stimulant and psychedelic effects", "notes": "Intense experience with cardiovascular considerations."},
-            {"substance_a": "lsd", "substance_b": "2cb", "risk_level": "moderate", "mechanism": "Cross-tolerance and intensified visuals", "notes": "Psychologically intense."},
-            {"substance_a": "ketamine", "substance_b": "nitrous", "risk_level": "moderate", "mechanism": "Profound dissociation", "notes": "Risk of complete dissociation - sit or lie down."},
-            {"substance_a": "dxm", "substance_b": "cannabis", "risk_level": "moderate", "mechanism": "Intensified dissociation and confusion", "notes": "Can increase anxiety and nausea."},
-            {"substance_a": "caffeine", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Masked intoxication", "notes": "Caffeine can mask alcohol effects leading to overconsumption."},
-            {"substance_a": "caffeine", "substance_b": "mdma", "risk_level": "moderate", "mechanism": "Increased cardiovascular strain", "notes": "Adds to heart rate and anxiety."},
-            {"substance_a": "pregabalin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased risk of respiratory depression."},
-            {"substance_a": "gabapentin", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation", "notes": "Increased intoxication and blackout risk."},
             {"substance_a": "dph", "substance_b": "alcohol", "risk_level": "moderate", "mechanism": "Enhanced sedation and confusion", "notes": "Uncomfortable combination."},
             
             # ===== LOW RISK =====
@@ -540,6 +576,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+async def startup_event():
+    """Auto-seed database if empty"""
+    try:
+        count = await db.substances.count_documents({})
+        if count == 0:
+            logger.info("Database empty, auto-seeding...")
+            await seed_database()
+            logger.info("Database seeded successfully on startup")
+        else:
+            logger.info(f"Database already has {count} substances, skipping seed")
+    except Exception as e:
+        logger.error(f"Startup seed error: {e}")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():

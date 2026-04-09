@@ -11,7 +11,7 @@ import sys
 from typing import Dict, List, Any
 
 # Backend URL from environment
-BACKEND_URL = "https://harmreduce-app.preview.emergentagent.com/api"
+BACKEND_URL = "https://safeuse-live.preview.emergentagent.com/api"
 
 class SafeuseAPITester:
     def __init__(self):
@@ -74,7 +74,7 @@ class SafeuseAPITester:
                 counts = data.get("counts", {})
                 expected_counts = {
                     "substances": 33,
-                    "interactions": 93,
+                    "interactions": 75,
                     "harm_advice": 9,
                     "symptoms": 7
                 }
@@ -154,6 +154,84 @@ class SafeuseAPITester:
                 self.log_result("Get Symptoms", False, f"Status: {response.status_code}, Response: {response.text}", response_time)
         except Exception as e:
             self.log_result("Get Symptoms", False, f"Exception: {str(e)}")
+
+    def test_substance_categories(self):
+        """Test GET /api/substance-categories - NEW endpoint for grouped substances"""
+        try:
+            start_time = time.time()
+            response = requests.get(f"{BACKEND_URL}/substance-categories", timeout=10)
+            response_time = time.time() - start_time
+            
+            if response.status_code == 200:
+                categories = response.json()
+                
+                # Check if it's an array
+                if not isinstance(categories, list):
+                    self.log_result("Substance Categories", False, "Response is not an array", response_time)
+                    return
+                
+                # Expected categories
+                expected_categories = [
+                    "Stimulants", "Empathogens", "Depressants", "Psychedelics", 
+                    "Dissociatives", "Cannabinoids", "Antidepressants", 
+                    "Opioid-like", "Gabapentinoids", "Other"
+                ]
+                
+                # Check structure and count substances
+                total_substances = 0
+                found_categories = []
+                
+                for category in categories:
+                    if not isinstance(category, dict):
+                        self.log_result("Substance Categories", False, "Category is not an object", response_time)
+                        return
+                    
+                    if "category" not in category or "substances" not in category:
+                        self.log_result("Substance Categories", False, "Missing 'category' or 'substances' field", response_time)
+                        return
+                    
+                    found_categories.append(category["category"])
+                    
+                    if not isinstance(category["substances"], list):
+                        self.log_result("Substance Categories", False, f"Substances in {category['category']} is not an array", response_time)
+                        return
+                    
+                    total_substances += len(category["substances"])
+                
+                # Check if we have the expected categories
+                missing_categories = [cat for cat in expected_categories if cat not in found_categories]
+                extra_categories = [cat for cat in found_categories if cat not in expected_categories]
+                
+                # Check total substance count (should be 33)
+                if total_substances == 33:
+                    substance_count_ok = True
+                    substance_details = f"Total substances: {total_substances} ✓"
+                else:
+                    substance_count_ok = False
+                    substance_details = f"Total substances: {total_substances} (expected 33) ✗"
+                
+                # Overall success
+                success = (len(missing_categories) == 0 and 
+                          len(extra_categories) == 0 and 
+                          substance_count_ok)
+                
+                details = [substance_details]
+                if missing_categories:
+                    details.append(f"Missing categories: {missing_categories}")
+                if extra_categories:
+                    details.append(f"Extra categories: {extra_categories}")
+                
+                self.log_result("Substance Categories", success, "; ".join(details), response_time)
+                
+                # Log category breakdown for review
+                print(f"    Categories found: {len(found_categories)}")
+                for category in categories:
+                    print(f"      {category['category']}: {len(category['substances'])} substances")
+                
+            else:
+                self.log_result("Substance Categories", False, f"Status: {response.status_code}, Response: {response.text}", response_time)
+        except Exception as e:
+            self.log_result("Substance Categories", False, f"Exception: {str(e)}")
 
     def test_interaction_check(self, test_name: str, substance_ids: List[str], expected_risk: str, already_taken: bool = False):
         """Test POST /api/check - Drug interaction checking"""
@@ -237,7 +315,10 @@ class SafeuseAPITester:
         # Test 4: Get symptoms  
         self.test_get_symptoms()
         
-        # Test 5-9: Interaction checks with different risk levels
+        # Test 5: NEW - Substance Categories
+        self.test_substance_categories()
+        
+        # Test 6-10: Interaction checks with different risk levels
         print("🔍 Testing Drug Interaction Checks:")
         print("-" * 30)
         

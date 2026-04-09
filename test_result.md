@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "COMPREHENSIVE BACKEND TESTING for SAFEUSE Application - Harm Reduction Drug Interaction Checker with FastAPI backend, MongoDB, 33 substances, 93 interactions seeded, GPT-4 AI integration"
+user_problem_statement: "COMPREHENSIVE BACKEND TESTING for SAFEUSE Application - Harm Reduction Drug Interaction Checker with FastAPI backend, MongoDB, 33 substances, 75 interactions (deduped), GPT-4 AI integration. New: /api/substance-categories endpoint, auto-seed on startup"
 
 backend:
   - task: "Root API Endpoint"
@@ -288,6 +288,51 @@ backend:
         - agent: "testing"
         - comment: "✅ Graceful error handling for invalid substance IDs, empty requests, and edge cases. Returns appropriate unknown risk responses."
 
+  - task: "Substance Categories Endpoint"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "New GET /api/substance-categories endpoint added. Returns substances grouped by drug class with labels and proper ordering."
+        - working: true
+        - agent: "testing"
+        - comment: "✅ GET /api/substance-categories working perfectly. Returns 10 categories (Stimulants, Empathogens, Depressants, Psychedelics, Dissociatives, Cannabinoids, Antidepressants, Opioid-like, Gabapentinoids, Other) with total 33 substances correctly grouped. Response time: 0.147s."
+
+  - task: "Auto-Seed on Startup"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Added startup event that auto-seeds the DB if empty. Verified working in logs."
+        - working: true
+        - agent: "testing"
+        - comment: "✅ Auto-seed on startup working correctly. Backend logs show 'Database already has 33 substances, skipping seed' confirming the startup event is functioning properly and only seeds when database is empty."
+
+  - task: "Deduplicated Interaction Data"
+    implemented: true
+    working: true
+    file: "server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+        - agent: "main"
+        - comment: "Removed duplicate interaction entries from seed data. Now 75 unique interactions instead of 93."
+        - working: true
+        - agent: "testing"
+        - comment: "✅ Deduplication working correctly. POST /api/seed-data now returns 75 interactions instead of 93, confirming duplicate entries were successfully removed. All interaction checks still working properly."
+
 frontend:
   # Frontend testing not performed as per instructions
 
@@ -298,12 +343,13 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus:
-    - "All backend endpoints tested and working"
+  current_focus: []
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 agent_communication:
+    - agent: "main"
+    - message: "Added 3 new features: 1) GET /api/substance-categories returns substances grouped by drug class, 2) Auto-seed on startup if DB empty, 3) Deduplicated interaction data (75 from 93). Please test these new endpoints and verify the existing endpoints still work correctly."
     - agent: "testing"
-    - message: "COMPREHENSIVE BACKEND TESTING COMPLETED SUCCESSFULLY. All 12 critical test cases passed (100% success rate). Fixed one minor bug in single substance handling. Backend is production-ready with excellent AI integration, proper risk assessment, and optimized performance. All endpoints responding correctly with appropriate response times."
+    - message: "✅ COMPREHENSIVE TESTING COMPLETE: All 3 new features working perfectly. NEW: Substance categories endpoint returns 10 categories with 33 substances, auto-seed confirmed via logs, deduplication verified (75 interactions). EXISTING: All 10 previous endpoints still working correctly including all risk levels, edge cases, and AI integration. Backend is fully functional with 100% test success rate (13/13 tests passed)."

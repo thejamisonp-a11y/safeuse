@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -8,86 +8,101 @@ export default function AlreadyTakenScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {/* Header */}
         <View style={styles.header}>
           <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-            <Ionicons name="arrow-back" size={24} color="#111827" />
+            <Ionicons name="arrow-back" size={22} color="#E1E8ED" />
           </TouchableOpacity>
         </View>
 
         {/* Icon */}
         <View style={styles.iconContainer}>
-          <Ionicons name="shield-checkmark" size={64} color="#10B981" />
+          <View style={styles.iconBg}>
+            <Ionicons name="shield-checkmark" size={48} color="#10B981" />
+          </View>
         </View>
 
         {/* Main Content */}
         <View style={styles.content}>
-          <Text style={styles.title}>Already Taken Something?</Text>
+          <Text style={styles.title}>You're Not Alone</Text>
           <Text style={styles.description}>
-            If you've already taken substances, focus on staying safe right now.
+            Focus on staying safe right now. Here's what you can do.
           </Text>
 
           {/* Immediate Actions */}
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Immediate Steps:</Text>
+            <View style={styles.cardTitleRow}>
+              <Ionicons name="checkmark-circle" size={20} color="#10B981" />
+              <Text style={styles.cardTitle}>Do This Now</Text>
+            </View>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-                <Text style={styles.bulletText}>Stay with someone you trust</Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-                <Text style={styles.bulletText}>Sip water regularly (don't overdo it)</Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-                <Text style={styles.bulletText}>Avoid taking more substances</Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Ionicons name="checkmark-circle" size={20} color="#10B981" />
-                <Text style={styles.bulletText}>Rest in a cool, comfortable place</Text>
-              </View>
+              {[
+                'Stay with someone you trust',
+                'Sip water regularly — don\'t overdo it',
+                'Do not take more substances',
+                'Rest in a cool, comfortable place',
+                'Monitor your breathing and heart rate',
+              ].map((text, i) => (
+                <View key={i} style={styles.bulletItem}>
+                  <View style={styles.bulletDot} />
+                  <Text style={styles.bulletText}>{text}</Text>
+                </View>
+              ))}
             </View>
           </View>
 
           {/* Warning Signs */}
-          <View style={[styles.card, styles.warningCard]}>
-            <Text style={styles.cardTitle}>Seek Help If You Experience:</Text>
+          <View style={styles.warningCard}>
+            <View style={styles.cardTitleRow}>
+              <Ionicons name="alert-circle" size={20} color="#EF4444" />
+              <Text style={[styles.cardTitle, { color: '#EF4444' }]}>Seek Help Immediately If:</Text>
+            </View>
             <View style={styles.bulletList}>
-              <View style={styles.bulletItem}>
-                <Ionicons name="alert-circle" size={20} color="#EF4444" />
-                <Text style={styles.bulletText}>Chest pain or difficulty breathing</Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Ionicons name="alert-circle" size={20} color="#EF4444" />
-                <Text style={styles.bulletText}>Severe confusion or can't stay awake</Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Ionicons name="alert-circle" size={20} color="#EF4444" />
-                <Text style={styles.bulletText}>Seizures or uncontrolled shaking</Text>
-              </View>
-              <View style={styles.bulletItem}>
-                <Ionicons name="alert-circle" size={20} color="#EF4444" />
-                <Text style={styles.bulletText}>Extreme overheating</Text>
-              </View>
+              {[
+                { text: 'Chest pain or difficulty breathing', icon: 'heart-dislike' },
+                { text: 'Severe confusion or can\'t stay awake', icon: 'cloudy-night' },
+                { text: 'Seizures or uncontrolled shaking', icon: 'flash' },
+                { text: 'Extreme overheating or high temperature', icon: 'thermometer' },
+                { text: 'Blue lips, fingertips, or skin', icon: 'water' },
+              ].map((item, i) => (
+                <View key={i} style={styles.warningItem}>
+                  <Ionicons name={item.icon as any} size={18} color="#EF4444" />
+                  <Text style={styles.warningText}>{item.text}</Text>
+                </View>
+              ))}
             </View>
           </View>
 
           {/* Emergency Note */}
           <View style={styles.emergencyNote}>
-            <Ionicons name="call" size={24} color="#EF4444" />
-            <Text style={styles.emergencyText}>
-              If symptoms are severe, call emergency services. Being honest about what was taken helps them provide better care.
-            </Text>
+            <View style={styles.emergencyIcon}>
+              <Ionicons name="call" size={22} color="#FFFFFF" />
+            </View>
+            <View style={styles.emergencyTextContainer}>
+              <Text style={styles.emergencyTitle}>Call Emergency Services</Text>
+              <Text style={styles.emergencyText}>
+                Being honest about what you took helps them provide better care. You won't get in trouble.
+              </Text>
+            </View>
           </View>
 
           {/* Check Interaction Button */}
           <TouchableOpacity
             style={styles.checkButton}
-            onPress={() => router.push('/checker')}
+            onPress={() => router.push({ pathname: '/checker', params: { alreadyTaken: 'true' } })}
+            activeOpacity={0.8}
           >
+            <Ionicons name="search" size={20} color="#FFFFFF" />
             <Text style={styles.checkButtonText}>Check Your Combination</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.homeButton}
+            onPress={() => router.push('/')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.homeButtonText}>Back to Home</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -98,103 +113,169 @@ export default function AlreadyTakenScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#0F1419',
   },
   scrollContent: {
-    padding: 24,
+    padding: 20,
+    paddingTop: Platform.OS === 'ios' ? 8 : 16,
     paddingBottom: 40,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 16,
   },
   backButton: {
     width: 40,
     height: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 12,
+    backgroundColor: '#1A2332',
   },
   iconContainer: {
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: 20,
+  },
+  iconBg: {
+    width: 80,
+    height: 80,
+    borderRadius: 24,
+    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(16, 185, 129, 0.2)',
   },
   content: {
-    gap: 24,
+    gap: 16,
   },
   title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#111827',
+    fontSize: 26,
+    fontWeight: '800',
+    color: '#E1E8ED',
     textAlign: 'center',
   },
   description: {
-    fontSize: 16,
-    color: '#6B7280',
+    fontSize: 15,
+    color: '#8899A6',
     textAlign: 'center',
-    lineHeight: 24,
+    lineHeight: 22,
+    marginBottom: 4,
   },
   card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 16,
-    padding: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: 8,
-    elevation: 2,
-  },
-  warningCard: {
-    backgroundColor: '#FEF2F2',
+    backgroundColor: '#1A2332',
+    borderRadius: 14,
+    padding: 18,
     borderWidth: 1,
-    borderColor: '#FEE2E2',
+    borderColor: '#253341',
+  },
+  cardTitleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+    marginBottom: 14,
   },
   cardTitle: {
-    fontSize: 17,
-    fontWeight: '600',
-    color: '#111827',
-    marginBottom: 16,
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#E1E8ED',
   },
   bulletList: {
-    gap: 12,
+    gap: 10,
   },
   bulletItem: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: 12,
+    gap: 10,
+  },
+  bulletDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: '#10B981',
+    marginTop: 7,
   },
   bulletText: {
     flex: 1,
     fontSize: 15,
-    color: '#4B5563',
+    color: '#AAB8C2',
+    lineHeight: 22,
+  },
+  warningCard: {
+    backgroundColor: 'rgba(239, 68, 68, 0.06)',
+    borderRadius: 14,
+    padding: 18,
+    borderWidth: 1.5,
+    borderColor: 'rgba(239, 68, 68, 0.2)',
+  },
+  warningItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  warningText: {
+    flex: 1,
+    fontSize: 15,
+    color: '#AAB8C2',
     lineHeight: 22,
   },
   emergencyNote: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    backgroundColor: '#FEF2F2',
-    borderRadius: 12,
+    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+    borderRadius: 14,
     padding: 16,
-    gap: 12,
+    gap: 14,
     borderWidth: 1,
-    borderColor: '#FCA5A5',
+    borderColor: 'rgba(239, 68, 68, 0.2)',
+  },
+  emergencyIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: '#EF4444',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emergencyTextContainer: {
+    flex: 1,
+  },
+  emergencyTitle: {
+    fontSize: 15,
+    fontWeight: '700',
+    color: '#EF4444',
+    marginBottom: 4,
   },
   emergencyText: {
-    flex: 1,
-    fontSize: 14,
-    color: '#991B1B',
-    lineHeight: 20,
-    fontWeight: '500',
+    fontSize: 13,
+    color: '#AAB8C2',
+    lineHeight: 19,
   },
   checkButton: {
     backgroundColor: '#10B981',
-    paddingVertical: 16,
-    borderRadius: 12,
+    flexDirection: 'row',
     alignItems: 'center',
-    minHeight: 56,
     justifyContent: 'center',
+    gap: 10,
+    paddingVertical: 16,
+    borderRadius: 14,
+    minHeight: 54,
   },
   checkButtonText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 17,
+    fontWeight: '700',
+  },
+  homeButton: {
+    backgroundColor: '#253341',
+    paddingVertical: 14,
+    borderRadius: 14,
+    alignItems: 'center',
+    minHeight: 52,
+    justifyContent: 'center',
+  },
+  homeButtonText: {
+    color: '#8899A6',
+    fontSize: 16,
     fontWeight: '600',
   },
 });
